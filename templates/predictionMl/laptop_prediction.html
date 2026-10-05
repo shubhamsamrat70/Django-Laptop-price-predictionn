@@ -1,1 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laptop Price Prediction</title>
 
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gradient-to-br from-slate-100 via-blue-50 to-indigo-100 min-h-screen py-10 px-4">
+
+    <div class="max-w-5xl mx-auto">
+
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-indigo-600 to-blue-600 rounded-2xl shadow-xl p-8 text-white mb-8">
+
+            <div class="flex items-center justify-between">
+
+                <div>
+                    <p class="text-indigo-200 text-sm font-medium uppercase tracking-wider">
+                        Machine Learning
+                    </p>
+
+                    <h1 class="text-3xl md:text-4xl font-bold mt-2">
+                        Laptop Price Predictor
+                    </h1>
+
+                    <p class="text-blue-100 mt-2">
+                        Enter laptop specifications to estimate its price.
+                    </p>
+                </div>
+
+                <div class="hidden md:flex bg-white/20 p-4 rounded-2xl">
+                    <span class="text-4xl">💻</span>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="grid lg:grid-cols-2 gap-8">
+
+            <!-- Input Section -->
+            <div class="bg-white rounded-2xl shadow-xl p-7">
+
+                <div class="mb-6">
+                    <h2 class="text-xl font-bold text-gray-800">
+                        Laptop Specifications
+                    </h2>
+
+                    <p class="text-sm text-gray-500 mt-1">
+                        Enter the details of your laptop
+                    </p>
+                </div>
+
+
+                <form method="POST" class="space-y-5">
+
+                    {% csrf_token %}
+
+
+                    <!-- RAM -->
+                    <div>
+
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                            RAM
+                        </label>
+
+                        <input
+                            type="text"
+                            name="RAM"
+                            value="{{ ram|default:'' }}"
+                            placeholder="e.g. 8GB"
+                            class="w-full border border-gray-300 rounded-xl px-4 py-3 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:outline-none transition"
+                            required>
+
+                    </div>
+
+
+                    <!-- Brand -->
+                    <div>
+
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                            Brand
+                        </label>
+
+                        <input
+                            type="text"
+                            name="Brand"
+                            value="{{ brand|default:'' }}"
+                            placeholder="e.g. HP"
+                            class="w-full border border-gray-300 rounded-xl px-4 py-3 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:outline-none transition"
+                            required>
+
+                    </div>
+
+
+                    <!-- Processor -->
+                    <div>
+
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                            Processor
+                        </label>
+
+                        <input
+                            type="text"
+                            name="processor"
+                            value="{{ processor|default:'' }}"
+                            placeholder="e.g. i5"
+                            class="w-full border border-gray-300 rounded-xl px-4 py-3 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:outline-none transition"
+                            required>
+
+                    </div>
+
+
+                    <!-- Storage -->
+                    <div>
+
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                            Storage
+                        </label>
+
+                        <input
+                            type="text"
+                            name="storage"
+                            value="{{ storage|default:'' }}"
+                            placeholder="e.g. 512GB SSD"
+                            class="w-full border border-gray-300 rounded-xl px-4 py-3 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:outline-none transition"
+                            required>
+
+                    </div>
+
+
+                    <!-- Button -->
+                    <button
+                        type="submit"
+                        class="w-full bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 text-white font-semibold py-3.5 rounded-xl shadow-lg hover:shadow-xl transition duration-200">
+
+                        Predict Laptop Price
+
+                    </button>
+
+                </form>
+
+            </div>
+
+
+            <!-- Result Section -->
+            <div>
+
+                {% if prediction %}
+
+                <!-- Price Card -->
+                <div class="bg-white rounded-2xl shadow-xl overflow-hidden mb-6">
+
+                    <div class="bg-gradient-to-r from-emerald-500 to-green-600 p-6 text-white">
+
+                        <p class="text-green-100 text-sm font-medium uppercase tracking-wider">
+                            Estimated Price
+                        </p>
+
+                        <h2 class="text-4xl font-bold mt-2">
+                            ₹ {{ prediction|floatformat:2 }}
+                        </h2>
+
+                    </div>
+
+
+                    <!-- Laptop Details -->
+                    <div class="p-6">
+
+                        <h3 class="text-lg font-bold text-gray-800 mb-4">
+                            Your Laptop Details
+                        </h3>
+
+
+                        <div class="grid grid-cols-2 gap-4">
+
+                            <!-- RAM -->
+                            <div class="bg-gray-50 rounded-xl p-4">
+
+                                <p class="text-xs text-gray-500 uppercase">
+                                    RAM
+                                </p>
+
+                                <p class="font-semibold text-gray-800 mt-1">
+                                    {{ ram }}
+                                </p>
+
+                            </div>
+
+
+                            <!-- Brand -->
+                            <div class="bg-gray-50 rounded-xl p-4">
+
+                                <p class="text-xs text-gray-500 uppercase">
+                                    Brand
+                                </p>
+
+                                <p class="font-semibold text-gray-800 mt-1">
+                                    {{ brand }}
+                                </p>
+
+                            </div>
+
+
+                            <!-- Processor -->
+                            <div class="bg-gray-50 rounded-xl p-4">
+
+                                <p class="text-xs text-gray-500 uppercase">
+                                    Processor
+                                </p>
+
+                                <p class="font-semibold text-gray-800 mt-1">
+                                    {{ processor }}
+                                </p>
+
+                            </div>
+
+
+                            <!-- Storage -->
+                            <div class="bg-gray-50 rounded-xl p-4">
+
+                                <p class="text-xs text-gray-500 uppercase">
+                                    Storage
+                                </p>
+
+                                <p class="font-semibold text-gray-800 mt-1">
+                                    {{ storage }}
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Model Performance -->
+                <div class="bg-white rounded-2xl shadow-xl p-6">
+
+                    <div class="flex items-center justify-between mb-4">
+
+                        <div>
+
+                            <h3 class="text-lg font-bold text-gray-800">
+                                Model Performance
+                            </h3>
+
+                            <p class="text-sm text-gray-500">
+                                R² Score
+                            </p>
+
+                        </div>
+
+
+                        <div class="bg-indigo-100 text-indigo-700 px-4 py-2 rounded-xl font-bold text-xl">
+
+                            {{ accuracy|floatformat:2 }}%
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Progress Bar -->
+                    <div class="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+
+                        <div
+                            class="bg-gradient-to-r from-indigo-500 to-blue-600 h-3 rounded-full"
+                            style="width: {{ accuracy_percent }}%;">
+                        </div>
+
+                    </div>
+
+
+                    <p class="text-xs text-gray-500 mt-3">
+
+                        R² score represents how well the model explains
+                        the variation in laptop prices.
+
+                    </p>
+
+                </div>
+
+
+                {% else %}
+
+                <!-- Before Prediction -->
+                <div class="bg-white rounded-2xl shadow-xl p-10 text-center h-full flex flex-col justify-center">
+
+                    <div class="text-6xl mb-5">
+                        💻
+                    </div>
+
+                    <h2 class="text-2xl font-bold text-gray-800">
+                        Ready to Predict
+                    </h2>
+
+                    <p class="text-gray-500 mt-2">
+
+                       
+
+                        <span class="font-semibold text-indigo-600">
+                            Enter the laptop specifications and click Predict Laptop Price
+                            to get an estimated price.
+                        </span>
+
+                        
+
+                    </p>
+
+                </div>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>
